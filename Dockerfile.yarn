@@ -1,22 +1,17 @@
 ## Stage 1 : build with maven builder image
 FROM registry.access.redhat.com/ubi9/nodejs-18:1-98.1711398651 AS build
-RUN npm install -g @angular/cli
-RUN npm install -g yarn
-COPY package.json yarn.lock ./
-# RUN yarn --frozen-lockfile
-# COPY public ./public
-RUN pwd
-RUN npm run ng g c test
-COPY src ./src
+USER root
+RUN mkdir -p /app
+WORKDIR /app
+COPY . .
+RUN npm install -g npm@10.5.1 --legacy-peer-deps yarn
+RUN yarn install
 RUN yarn build
 
 ## Stage 2 : create the docker final image
 FROM registry.access.redhat.com/ubi9/nginx-122:1-59
 ENV LANG=en_US.utf8
-
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /opt/app-root/src/build/ /usr/share/nginx/html
-
+COPY --from=build /app/dist/browser /usr/share/nginx/html
 EXPOSE 8080/tcp
-
 CMD nginx -g "daemon off;"
