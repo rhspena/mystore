@@ -9,4 +9,6 @@ README.md
 LICENSE
 .vscode
 .yarn
+.env
+.angular
 dist
