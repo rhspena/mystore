@@ -63,4 +63,5 @@ aio/content/examples/.DS_Store
 .angular/
 
 # Ignore cache created with the YARN
+.npmrc
 .yarn/

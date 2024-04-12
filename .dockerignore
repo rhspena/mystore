@@ -1,12 +1,24 @@
+# npm
 node_modules
 npm-debug.log
+dist
+package-lock.json
+.angular
+
+# yarn
+yarn.lock
+.yarn
+
+# container
 Dockerfile*
 docker-compose*
 .dockerignore
+
+# git
 .git
 .gitignore
+
+# project
 README.md
 LICENSE
 .vscode
-.yarn
-dist
