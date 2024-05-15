@@ -4,5 +4,17 @@ jobs:
   my-job:
     runs-on: ubuntu-latest
     steps:
-      - name: my-step
+      - name: my-print
         run: echo "Hello World!"
+      - uses: Azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - uses: Azure/get-keyvault-secrets@v1
+        with:
+          keyvault: "OXZRGMDPDEV01"
+          secrets: 'PB-DEV-OPENSHIFT-DB-HOST, PB-DEV-OPENSHIFT-DB-USER'
+        id: keyVaultSecrets
+      - name: my-host
+        run: echo ${{ steps.keyVaultSecrets.outputs.PB-DEV-OPENSHIFT-DB-HOST }}
+      - name: my-user
+        run: echo ${{ steps.keyVaultSecrets.outputs.PB-DEV-OPENSHIFT-DB-USER }}
